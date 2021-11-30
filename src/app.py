@@ -6,13 +6,6 @@ from function import *
 root = Tk()
 root.geometry('500x650') 
 root.title("Calculadora de funciones Hash")
-#root.resizable(0,0)
-#root.configure(bg = 'beige')
-
-#frame = Frame(root, width=450, height=500)
-#frame.pack()
-#frame.config(cursor="plus", bg="beige", bd=25)
-
 
 entrada = Label(root, text="Ingrese el texto a cifrar", font=("Arial", 12))
 entrada.grid(row=0, column=0, pady=10)
@@ -34,30 +27,28 @@ combo.current(0)
 combo.grid(row=3, column=0, sticky=W, padx=30, pady=10)
 
 
-clave = Entry(root,width=40)
-
 def func(event):
-    print(selected_combo.get())
+    #print(selected_combo.get())
+    global lbl_clave
+    global clave
+
     if selected_combo.get() == "HMAC":
         lbl_clave = Label(root, text="Clave", font=("Arial", 12))
         lbl_clave.grid(row=4, column=0, sticky=W, padx=30)
 
-        #clave = Entry(root,width=40)
+        clave = Entry(root,width=40)
         clave.grid(row=4, column=0)
 
 combo.bind('<<ComboboxSelected>>', func)
 
 ################## cifrando ##################
 
-
 def cifrar():
+    global opcion
+
     opcion = combo.get()
-    #print(opcion)
     texto = box_entrada.get("1.0", END)
     texto = texto.rstrip('\r\n')
-    #print(texto)
-
-    clave_HMAC = clave.get()
 
     if opcion == "MD5":
         resultado = MD5(texto)
@@ -68,9 +59,16 @@ def cifrar():
     elif opcion == "SHA256":
         resultado = SHA256(texto)
     elif opcion == "HMAC":
-        resultado = HMACall(clave_HMAC,texto)
+        resultado = HMACall(clave.get(),texto)
 
-    print(resultado)
+    global salida
+    global box_salida
+    global lbl1
+    global box_salida1
+    global lbl2
+    global box_salida2
+    global lbl3
+    global box_salida3
 
     salida = Label(root, text="Texto cifrado", font=("Arial", 12))
     salida.grid(row=5, column=0, pady=10)
@@ -102,14 +100,37 @@ def cifrar():
         box_salida3 = scrolledtext.ScrolledText(root,width=57,height=3)
         box_salida3.grid(row=11,column=0, sticky=W+E, padx=5, pady=5)
         box_salida3.insert(INSERT,resultado[2])
+    
+
+    btn_cifrar['state'] = DISABLED
         
+################## limpiar ##################
+
+def limpiar():
+
+    if opcion == "HMAC":
+        clave.destroy()
+        lbl_clave.destroy()
+        salida.destroy()
+        lbl1.destroy()
+        box_salida1.frame.destroy()
+        lbl2.destroy()
+        box_salida2.frame.destroy()
+        lbl3.destroy()
+        box_salida3.frame.destroy()
+    else:
+        salida.destroy()
+        box_salida.frame.destroy()
+    
+    btn_cifrar['state'] = NORMAL
 
 
 ###########################
 
-btn = Button(root, text="Cifrar", command=cifrar)
-btn.grid(row=3, column=0, sticky=E, padx=30, pady=10)
+btn_cifrar = Button(root, text="Cifrar", command=cifrar)
+btn_cifrar.grid(row=3, column=0, sticky=E, padx=150, pady=10)
 
-
+btn_limpiar = Button(root, text="Limpiar", command=limpiar)
+btn_limpiar.grid(row=3, column=0, sticky=E, padx=30, pady=10)
 
 root.mainloop()
