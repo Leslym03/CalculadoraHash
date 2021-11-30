@@ -21,3 +21,25 @@ def SHA256(cad):
     resultsha256 = hashObjectsha256.hexdigest()    
     return resultsha256
 
+
+def HMACall(key,msj):
+    byte_key = bytes(key, 'UTF-8')
+
+    msj = msj.encode()
+
+    #MD5
+    hashObjecthmacmd5 = hmac.new(byte_key,msj,hashlib.md5)
+    resulthmacmd5 = hashObjecthmacmd5.hexdigest()
+
+    #SHA256
+    hashObjecthmac256 = hmac.new(byte_key,msj,hashlib.sha256)
+    resulthmac256 = hashObjecthmac256.hexdigest()
+
+    #SHA1
+    hashObjecthmac1 = hmac.new(byte_key,msj,hashlib.sha1)
+    resulthmac1 = hashObjecthmac1.hexdigest()
+    
+    vector = [resulthmacmd5, resulthmac256, resulthmac1]
+ #   print("HMAC  \nMD5\t\t: {}  \nSHA1\t: {}  \nSHA256\t: {}".format(resulthmacmd5, resulthmac1, resulthmac256))
+
+    return vector
