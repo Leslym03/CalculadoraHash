@@ -26,9 +26,7 @@ combo['values']= ("MD4", "MD5", "SHA1", "SHA256", "HMAC")
 combo.current(0) 
 combo.grid(row=3, column=0, sticky=W, padx=30, pady=10)
 
-
 def func(event):
-    #print(selected_combo.get())
     global lbl_clave
     global clave
 

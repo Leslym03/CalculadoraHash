@@ -40,6 +40,5 @@ def HMACall(key,msj):
     resulthmac1 = hashObjecthmac1.hexdigest()
     
     vector = [resulthmacmd5, resulthmac256, resulthmac1]
- #   print("HMAC  \nMD5\t\t: {}  \nSHA1\t: {}  \nSHA256\t: {}".format(resulthmacmd5, resulthmac1, resulthmac256))
 
     return vector
